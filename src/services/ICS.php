@@ -123,15 +123,26 @@ class ICS extends Component
         $owner = $model->getOwner();
         $rule = $model->rrule()->getRRules()[0];
 
-        $ics = "BEGIN:VEVENT\n".
-        $rule->rfcString()."\n".
-        "DTEND;TZID=". $model->endDate->getTimezone()->getName().":". $model->endDate->format('Ymd\THis') ."\n".
-        "SUMMARY:".$this->_escapeString($owner->title)."\n".
-        "DESCRIPTION:\n".
-        "URL;VALUE=URI:".$owner->url."\n".
-        "UID:".uniqid()."\n".
-        "DTSTAMP:".$this->_dateToCal()."\n".
-        "END:VEVENT\n";
+        if ($model->endDate) {
+		$ics = "BEGIN:VEVENT\n".
+		$rule->rfcString()."\n".
+		"DTEND;TZID=". $model->endDate->getTimezone()->getName().":". $model->endDate->format('Ymd\THis') ."\n".
+		"SUMMARY:".$this->_escapeString($owner->title)."\n".
+		"DESCRIPTION:\n".
+		"URL;VALUE=URI:".$owner->url."\n".
+		"UID:".uniqid()."\n".
+		"DTSTAMP:".$this->_dateToCal()."\n".
+		"END:VEVENT\n";
+	} else {
+		$ics = "BEGIN:VEVENT\n".
+		$rule->rfcString()."\n".
+		"SUMMARY:".$this->_escapeString($owner->title)."\n".
+		"DESCRIPTION:\n".
+		"URL;VALUE=URI:".$owner->url."\n".
+		"UID:".uniqid()."\n".
+		"DTSTAMP:".$this->_dateToCal()."\n".
+		"END:VEVENT\n";
+	}
 
         return $ics;
     }
