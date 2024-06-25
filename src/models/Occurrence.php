@@ -62,7 +62,7 @@ class Occurrence
      */
     public function __toString()
     {
-        return $this->next->format('U');
+        return $this->next ? $this->next->format('U') : '';
     }
 
     /**
